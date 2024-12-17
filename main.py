@@ -14,7 +14,7 @@ class CoffeeEspresso(QMainWindow):
         uic.loadUi(f, self)
         data = cur.execute('SELECT * from Coffee_info').fetchall()
         for coffee_type in data:
-            post = f'{coffee_type[0]}. {coffee_type[1]}: {coffee_type[2]} {coffee_type[3]} {coffee_type[4]} {coffee_type[5]} {coffee_type[6]}'
+            post = f'{coffee_type[0]}. {coffee_type[1]}: {coffee_type[2]}; {coffee_type[3]}; {coffee_type[4]}; {coffee_type[5]}; {coffee_type[6]}'
             self.coffeelist.addItem(post)
 
 
