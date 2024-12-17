@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>712</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,6 +22,19 @@
       <width>801</width>
       <height>601</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="des">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>650</y>
+      <width>421</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Refactor/add new</string>
     </property>
    </widget>
   </widget>
