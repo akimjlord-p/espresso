@@ -37,6 +37,19 @@
      <string>Refactor/add new</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="refresh">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>650</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>REFRESH</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
