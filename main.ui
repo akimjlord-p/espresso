@@ -17,10 +17,10 @@
    <widget class="QListWidget" name="coffeelist">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>-9</y>
+      <x>0</x>
+      <y>10</y>
       <width>801</width>
-      <height>611</height>
+      <height>601</height>
      </rect>
     </property>
    </widget>
