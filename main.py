@@ -40,31 +40,45 @@ class NewPost(QMainWindow):
         super().__init__()
         f = open('addEditCoffeeForm.ui', 'r')
         uic.loadUi(f, self)
-        self.new_2.clicked.connect(self.add_new_post)
+        self.new_2.clicked.connect(self.add_or_update_new_post)
 
-    def add_new_post(self):
-        cur.execute('SELECT id FROM Coffee_info WHERE id=(SELECT MAX(id) FROM Coffee_info)')
-        last_id = cur.fetchone()
-        if last_id:
-            id = int(last_id[0]) + 1
-        else:
-            id = 0
+    def add_or_update_new_post(self):
         if (self.name.text()
                 and self.roasting.text()
                 and self.grains.text()
                 and self.description.text()
                 and self.cost.text()
                 and self.packag.text()):
-            cur.execute('INSERT INTO Coffee_info '
-                        '(id, name, roasting, grains, description, cost, packag) VALUES(?, ?, ?, ?, ?, ?, ?)', (
-                            id, self.name.text(), self.roasting.text(), self.grains.text(), self.description.text(),
-                            self.cost.text(), self.packag.text()))
-            conn.commit()
-            saved_msg = QMessageBox()
-            saved_msg.setWindowTitle('Saved')
-            saved_msg.setText("Saved into data base")
-            saved_msg.setIcon(QMessageBox.Icon.Information)
-            saved_msg.exec()
+            if not cur.execute(f'SELECT * FROM Coffee_info WHERE name="{self.name.text()}"').fetchall():
+                cur.execute('SELECT id FROM Coffee_info WHERE id=(SELECT MAX(id) FROM Coffee_info)')
+                last_id = cur.fetchone()
+                if last_id:
+                    id = int(last_id[0]) + 1
+                else:
+                    id = 0
+
+                cur.execute('INSERT INTO Coffee_info '
+                            '(id, name, roasting, grains, description, cost, packag) VALUES(?, ?, ?, ?, ?, ?, ?)', (
+                                id, self.name.text(), self.roasting.text(), self.grains.text(), self.description.text(),
+                                self.cost.text(), self.packag.text()))
+                conn.commit()
+                saved_msg = QMessageBox()
+                saved_msg.setWindowTitle('Saved')
+                saved_msg.setText("Saved into data base")
+                saved_msg.setIcon(QMessageBox.Icon.Information)
+                saved_msg.exec()
+            else:
+                id = cur.execute(f'SELECT id FROM Coffee_info WHERE name="{self.name.text()}"').fetchone()
+                cur.execute('UPDATE Coffee_info SET id=?, name=?, roasting=?, grains=?, description=?, cost=?, '
+                            'packag=? WHERE name=?', (
+                            id[0], self.name.text(), self.roasting.text(), self.grains.text(), self.description.text(),
+                            self.cost.text(), self.packag.text(), self.name.text()))
+                conn.commit()
+                saved_msg = QMessageBox()
+                saved_msg.setWindowTitle('Saved')
+                saved_msg.setText("Updated into data base")
+                saved_msg.setIcon(QMessageBox.Icon.Information)
+                saved_msg.exec()
         else:
             error = QMessageBox()
             error.setWindowTitle('ERROR')
