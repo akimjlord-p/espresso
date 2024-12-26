@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QInputDialog
 from PyQt6 import uic
 import sqlite3
 
@@ -41,6 +41,7 @@ class NewPost(QMainWindow):
         f = open('addEditCoffeeForm.ui', 'r')
         uic.loadUi(f, self)
         self.new_2.clicked.connect(self.add_or_update_new_post)
+        self.from_db.clicked.connect(self.open_from_db)
 
     def add_or_update_new_post(self):
         if (self.name.text()
@@ -85,6 +86,31 @@ class NewPost(QMainWindow):
             error.setText('Incorrect input')
             error.setIcon(QMessageBox.Icon.Warning)
             error.exec()
+
+    def open_from_db(self):
+        posts = cur.execute("SELECT * FROM Coffee_info").fetchall()
+        if len(posts) != 0:
+            l = []
+            for post in posts:
+                l.append(f'{post[0]} {post[1]}')
+            post, ok_pressed = QInputDialog.getItem(
+                None, "Select post", "post:",
+               l, 1, False)
+            post = cur.execute('SELECT * FROM Coffee_info WHERE id=?', (post[0],)).fetchone()
+            self.name.setText(post[1])
+            self.roasting.setText(post[1])
+            self.grains.setText(post[2])
+            self.description.setText(post[3])
+            self.cost.setText(post[4])
+            self.packag.setText(post[5])
+        else:
+            saved_msg = QMessageBox()
+            saved_msg.setWindowTitle('No projects')
+            saved_msg.setText("No projects in local base")
+            saved_msg.setIcon(QMessageBox.Icon.Information)
+            saved_msg.exec()
+
+
 
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)

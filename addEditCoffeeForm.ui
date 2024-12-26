@@ -93,14 +93,14 @@
        <item>
         <widget class="QPushButton" name="new_2">
          <property name="text">
-          <string>new</string>
+          <string>Save</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="from_db">
          <property name="text">
-          <string>from db</string>
+          <string>Open</string>
          </property>
         </widget>
        </item>
